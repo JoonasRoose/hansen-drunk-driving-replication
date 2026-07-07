@@ -54,6 +54,13 @@ where:
 
 The analysis uses a bandwidth of 0.05 BAC units around each threshold and clusters standard errors by BAC values measured to 0.001
 
+
+## How to run code
+1. Download or clone this repository.
+2. Confirm that `modified_hansen_data.csv` is in the `data/` folder.
+3. Open `code/Replication_assignment (1).ipynb`.
+4. Run all cells from top to bottom.
+5. The output table will be saved to `output/tables/reduced_table2_replication.csv`.
 ## Repository Structure
 
 ```text
