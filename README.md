@@ -1,9 +1,9 @@
-# Replication Assignment: Hansen (2015) Table 2
+# Hansen (2015) Replication and Machine Learning Extension
 
 ## Authors
 
-- Joonas Roose  
-- Talbot Carrie  
+- Joonas Roose
+- Talbot Carrie
 
 ## Course
 
@@ -11,74 +11,181 @@ EC 410K / EC 610I: Machine Learning in Economics
 
 ## Paper
 
-Benjamin Hansen. 2015. “Punishment and Deterrence: Evidence from Drunk Driving.” *American Economic Review*, 105(4): 1581–1617.  
+Benjamin Hansen. 2015. *Punishment and Deterrence: Evidence from Drunk Driving.* American Economic Review, 105(4), 1581–1617.
+
 https://doi.org/10.1257/aer.20130189
 
-## Replicated Result
+---
 
-This project replicates a reduced version of Table 2 from Hansen (2015), titled:
+# Project Overview
 
-> “Regression Discontinuity Estimates for the Effect of Exceeding BAC Thresholds on Predetermined Characteristics.”
+This repository contains both:
 
-The original table tests whether drivers immediately below and above Washington State’s legal blood alcohol content (BAC) thresholds are similar in predetermined characteristics. This is an important validity test for the paper’s regression discontinuity design.
+1. A replication of selected results from Hansen (2015).
+2. A machine learning extension that applies causal forests to investigate treatment-effect heterogeneity around the legal BAC threshold.
 
-The replication estimates local linear regression discontinuity models at:
+The project was completed as part of the Machine Learning in Economics course.
 
-- BAC = 0.08: the standard DUI threshold
-- BAC = 0.15: the aggravated DUI threshold
+---
 
-The replicated outcomes are:
+# Replication
 
+The replication reproduces a reduced version of Hansen's Table 2:
+
+> "Regression Discontinuity Estimates for the Effect of Exceeding BAC Thresholds on Predetermined Characteristics."
+
+The analysis estimates local linear regression discontinuity models at the two legal blood alcohol concentration (BAC) thresholds:
+
+- BAC = 0.08
+- BAC = 0.15
+
+The replicated predetermined characteristics are:
+
+- Age
 - Male
 - White
-- Age
 - Accident involvement
 
-The original paper also includes prior BAC-test history and portable breath-test (PBT) results. Those variables are not available in the modified dataset provided for this assignment. Therefore, this project is a reduced replication of Table 2.
+Prior BAC history and portable breath-test (PBT) variables included in Hansen (2015) are unavailable in the modified dataset supplied for this assignment.
 
-## Research Design
+---
 
-The analysis estimates whether predetermined driver characteristics change discontinuously when BAC crosses a legal threshold.
+# Machine Learning Extension
 
-For each outcome variable, the regression is:
+The extension builds on the original regression discontinuity design by estimating heterogeneous treatment effects using honest causal forests implemented through the `CausalForestDML` estimator from Microsoft's EconML package.
 
-Yᵢ = α + βDᵢ + γ(BACᵢ − c) + δ[Dᵢ(BACᵢ − c)] + εᵢ
+The extension examines whether the deterrence effect varies according to:
 
-where:
+- Age
+- Gender
+- Race
+- Accident involvement
+- Year
 
-- Yᵢ is a predetermined driver characteristic, such as sex, race, age, or accident involvement.
-- Dᵢ equals 1 when BAC is at or above the relevant legal threshold.
-- BACᵢ − c is BAC centered at the threshold.
-- c equals 0.08 or 0.15.
-- β measures the discontinuity at the legal BAC threshold.
+Additional analyses include:
 
-The analysis uses a bandwidth of 0.05 BAC units around each threshold and clusters standard errors by BAC values measured to 0.001
+- Single-characteristic causal forests
+- Nested causal-forest specifications
+- Treatment-effect profile estimation
+- Bandwidth sensitivity analysis
+- Statistical comparison with Hansen's published estimates
 
+---
 
-## How to run code
-1. Download or clone this repository.
-2. Confirm that `modified_hansen_data.csv` is in the `data/` folder.
-3. Open `code/Replication_assignment (1).ipynb`.
-4. Run all cells from top to bottom.
-5. The output table will be saved to `output/tables/reduced_table2_replication.csv`.
-## Repository Structure
+# Research Design
+
+The conventional regression discontinuity specification estimates
+
+\[
+Y_i=\alpha+\beta D_i+\gamma(BAC_i-c)+\delta D_i(BAC_i-c)+\varepsilon_i
+\]
+
+where
+
+- \(Y_i\) is the outcome variable,
+- \(D_i\) equals one if BAC exceeds the legal threshold,
+- \(c\) is either 0.08 or 0.15,
+- \(\beta\) measures the treatment effect at the threshold.
+
+The machine learning extension preserves the regression discontinuity design while allowing treatment effects to vary across observed characteristics using causal forests.
+
+---
+
+# Repository Structure
 
 ```text
-replication-assignment/
+hansen-drunk-driving-replication/
 │
 ├── README.md
-├── requirements.txt
-├── AI_DISCLOSURE.md
 │
 ├── code/
-│   └── replication_table2.ipynb
+│   ├── Hansen_extension.ipynb
+│   ├── Replication_and_Causal_ML_Extension.ipynb
+│   └── Replication_assignment (1).ipynb
 │
 ├── data/
-│   └── README.md
+│   └── modified_hansen_data.csv
 │
 ├── output/
+│   ├── figures/
 │   └── tables/
-│       └── reduced_table2_replication.csv
+│       ├── reduced_table2_replication.csv
+│       └── tables.zip
 │
 └── report/
-    └── Roose_Carrie_ReplicationReport.pdf# hansen-drunk-driving-replication
+    ├── Machine_Learning_Final_Project.pdf
+    └── ML_Replication_Project.pdf
+```
+
+---
+
+# Running the Code
+
+## Replication
+
+Open
+
+```
+code/Replication_assignment (1).ipynb
+```
+
+and run all cells.
+
+This notebook reproduces the reduced version of Hansen's Table 2.
+
+---
+
+## Machine Learning Extension
+
+Open
+
+```
+code/Hansen_extension.ipynb
+```
+
+(or alternatively `Replication_and_Causal_ML_Extension.ipynb` if you wish to reproduce the complete workflow.)
+
+Run all notebook cells from top to bottom.
+
+The notebook produces:
+
+- replication tables
+- causal forest estimates
+- treatment-effect profiles
+- bandwidth sensitivity analyses
+- comparison tables
+- publication-ready figures
+
+Outputs are automatically written to the `output/` directory.
+
+---
+
+# Software
+
+The project was developed in Python using:
+
+- pandas
+- numpy
+- matplotlib
+- scipy
+- statsmodels
+- EconML
+- scikit-learn
+
+---
+
+# Reports
+
+The final research report is located in
+
+```
+report/Machine_Learning_Final_Project.pdf
+```
+
+and documents the replication, machine learning extension, empirical findings, and policy interpretation.
+
+---
+
+# License
+
+This repository is intended solely for educational purposes as part of the Machine Learning in Economics course.
