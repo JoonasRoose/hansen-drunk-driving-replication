@@ -1,3 +1,9 @@
-pandas
 numpy
+pandas
+matplotlib
+scipy
 statsmodels
+scikit-learn
+econml
+jupyter
+ipykernel
